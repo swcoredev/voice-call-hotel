@@ -17,7 +17,12 @@ def process_voice():
 def upload_form():
     return render_template_string('''
         <!doctype html>
-        <title>Upload audio for STT</title>
+        <html lang="ru">
+        <head>
+            <meta charset="utf-8">
+            <title>Upload audio for STT</title>
+        </head>
+        <body>
         <h1>Upload audio file for STT</h1>
         <form id="uploadForm" enctype="multipart/form-data">
           <input type="file" name="audio" accept="audio/*" required>
@@ -50,6 +55,8 @@ def upload_form():
           document.getElementById('result').innerText = msg;
         };
         </script>
+        </body>
+        </html>
     ''')
 
 @app.route("/")
@@ -57,4 +64,4 @@ def index():
     return "VoiceCall Hotel API is running"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8001)
