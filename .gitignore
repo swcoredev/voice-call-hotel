@@ -5,3 +5,4 @@ __pycache__/
 *.mp3
 logs/
 .env
+cursor_implementing_stt_module_steps.md
