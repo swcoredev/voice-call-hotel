@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .logic import analyze_text
+from .logic import analyze_text, save_intent_to_db
 from .schemas import TextIn, AnalyzeOut
 import os
 from sqlalchemy import create_engine
@@ -22,4 +22,6 @@ def analyze():
         return jsonify({'error': 'Missing text'}), 400
     text_in = TextIn(**data)
     result = analyze_text(text_in.text)
+    # Сохраняем результат в базу
+    save_intent_to_db(engine, text_in.text, result['intent'], result['entities'])
     return jsonify(AnalyzeOut(**result).dict()) 
