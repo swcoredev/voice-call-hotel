@@ -1,3 +1,10 @@
+# STT (Speech-to-Text)
+Микромодуль для загрузки аудиофайлов и преобразования речи в текст.
+Работает на Flask, маршруты:
+- `GET /upload` — HTML-форма для загрузки файла
+- `POST /api/v1/voice/process` — обработка текста
+Развёрнут через Cloudflare Tunnel на домене `https://stt.servis.work`.
+
 # Модуль stt
 
 ## Назначение

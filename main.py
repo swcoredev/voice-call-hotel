@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify, render_template_string
 from voice_call_handler.stt import stt_bp
 from voice_call_handler.logic import handle_voice_text
+from voice_call_handler.lang import lang_bp
 
 app = Flask(__name__)
 app.register_blueprint(stt_bp)
+app.register_blueprint(lang_bp)
 
 @app.route("/api/v1/voice/process", methods=["POST"])
 def process_voice():
