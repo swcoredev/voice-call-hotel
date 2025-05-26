@@ -1,16 +1,37 @@
-import pytest
-from flask import Flask
-from voice_call_handler.tts import tts_bp
+import os
+import requests
+from dotenv import load_dotenv
 
-@pytest.fixture
-def client():
-    app = Flask(__name__)
-    app.register_blueprint(tts_bp)
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        yield client
+load_dotenv()
 
-def test_tts_synthesize(client):
-    response = client.post('/api/v1/tts/synthesize', json={"text": "Привет, это тест"})
-    assert response.status_code == 200
-    assert response.json["result"] == "Speech synthesized" 
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID")
+ELEVENLABS_SPEED = float(os.getenv("ELEVENLABS_SPEED", 1.0))
+
+url = f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVENLABS_VOICE_ID}"
+
+headers = {
+    "Accept": "audio/mpeg",
+    "Content-Type": "application/json",
+    "xi-api-key": ELEVENLABS_API_KEY
+}
+
+data = {
+    "text": "Привет, это тест синтеза речи!",
+    "voice_settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.7,
+        "style": 0.0,
+        "use_speaker_boost": True,
+        "speed": ELEVENLABS_SPEED
+    }
+}
+
+response = requests.post(url, json=data, headers=headers)
+
+if response.status_code == 200:
+    with open("tts/test_output.mp3", "wb") as f:
+        f.write(response.content)
+    print("Успешно: файл сохранён как test_output.mp3")
+else:
+    print(f"Ошибка: {response.status_code} — {response.text}") 

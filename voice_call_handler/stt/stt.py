@@ -46,7 +46,11 @@ def process_audio():
             'ffmpeg', '-y', '-i', input_path,
             '-ar', '16000', '-ac', '1', output_path
         ]
-        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if proc.returncode != 0:
+            error_msg = proc.stderr.decode(errors='ignore')
+            logger.error(f'Ошибка ffmpeg: {error_msg}')
+            return jsonify({'error': f'ffmpeg error: {error_msg}'}), 400
         logger.info(f'Конвертация завершена: {output_path}')
         # Распознаём через OpenAI Whisper API
         logger.info(f'Распознавание: {output_path}')

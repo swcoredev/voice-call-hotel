@@ -3,8 +3,11 @@ from .logic import analyze_text, save_intent_to_db
 from .schemas import TextIn, AnalyzeOut
 import os
 from sqlalchemy import create_engine
+from dotenv import load_dotenv
 
 lang_bp = Blueprint('lang', __name__, url_prefix='/api/v1/lang')
+
+load_dotenv()
 
 POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'localhost')
 POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
