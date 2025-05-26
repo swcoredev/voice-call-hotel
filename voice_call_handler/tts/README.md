@@ -30,4 +30,8 @@ curl -X POST http://127.0.0.1:8001/api/v1/tts/synthesize \
 {
   "result": "Speech synthesized"
 }
-``` 
+```
+
+## Тесты
+
+Папка `tests/` содержит примеры использования и юнит-тесты для модуля TTS. 

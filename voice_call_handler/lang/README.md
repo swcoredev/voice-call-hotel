@@ -40,4 +40,8 @@ POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=voice_hotel_db
 POSTGRES_USER=adm......e
-POSTGRES_PASSWORD=Secu.......3 
+POSTGRES_PASSWORD=Secu.......3
+
+## Тесты
+
+Папка `tests/` содержит примеры использования и юнит-тесты для модуля LANG. 
