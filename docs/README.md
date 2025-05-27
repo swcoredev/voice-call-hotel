@@ -61,7 +61,7 @@ POST http://localhost:8000/api/v1/stt/process
 Модуль LANG использует OpenAI (gpt-4o) для извлечения намерения пользователя, номера комнаты, времени и уверенности из текстового запроса.
 
 - Функция `detect_intent(text: str) -> dict` возвращает JSON с полями:
-  - `intent`: например, "room_cleaning", "food_order", "late_checkout", "unknown"
+  - `intent`: например, "room_cleaning", "food_order", "late_checkout", "room_booking", "unknown"
   - `room_number`: если найден (например, "217")
   - `time`: если найдено (например, "evening", "tomorrow")
   - `confidence`: от 0 до 1
@@ -93,13 +93,14 @@ pytest voice_call_handler/tests/test_detect_intent.py
 
 - Если клиент просит уборку (room_cleaning), возвращает: `Уборка будет выполнена в номере <room_number> <time>.`
 - Если поздний выезд (late_checkout), возвращает: `Поздний выезд возможен. Я отмечу это в системе.`
+- Если клиент просит бронирование (room_booking), возвращает: `Конечно! Я помогу вам с бронированием. Уточните, пожалуйста, даты и количество гостей.`
 - Если не распознано (unknown), возвращает: `Извините, я не совсем понял. Повторите, пожалуйста.`
 
 Пример:
 ```python
 from voice_call_handler.dialog import handle_dialog
-print(handle_dialog("Пожалуйста, уберите в номере 305 сегодня вечером."))
-# Уборка будет выполнена в номере 305 сегодня вечером.
+print(handle_dialog("Здравствуйте, я хочу забронировать номер с 5 по 7 июня на двоих."))
+# Конечно! Я помогу вам с бронированием. Уточните, пожалуйста, даты и количество гостей.
 ```
 
 Тесты: `pytest voice_call_handler/tests/test_dialog.py`

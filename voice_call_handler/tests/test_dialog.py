@@ -12,6 +12,11 @@ def test_late_checkout():
     response = handle_dialog(text)
     assert "Поздний выезд возможен" in response
 
+def test_room_booking():
+    text = "Здравствуйте, я хочу забронировать номер с 5 по 7 июня на двоих."
+    response = handle_dialog(text)
+    assert "помогу вам с бронированием" in response
+
 def test_unknown():
     text = "А можно фиолетовый дракон?"
     response = handle_dialog(text)

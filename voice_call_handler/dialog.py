@@ -11,5 +11,7 @@ def handle_dialog(text: str) -> str:
         return f"Уборка будет выполнена в номере {room}{time_str}."
     elif intent == "late_checkout":
         return "Поздний выезд возможен. Я отмечу это в системе."
+    elif intent == "room_booking":
+        return "Конечно! Я помогу вам с бронированием. Уточните, пожалуйста, даты и количество гостей."
     else:
         return "Извините, я не совсем понял. Повторите, пожалуйста." 
