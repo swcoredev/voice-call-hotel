@@ -1,25 +1,22 @@
 # STT (Speech-to-Text)
 Микромодуль для загрузки аудиофайлов и преобразования речи в текст.
-Работает на Flask, маршруты:
-- `GET /upload` — HTML-форма для загрузки файла
-- `POST /api/v1/voice/process` — обработка текста
-Развёрнут через Cloudflare Tunnel на домене `https://stt.servis.work`.
-
-# Модуль stt
 
 ## Назначение
-Распознавание речи (Speech-to-Text) для голосовых вызовов.
+Распознавание речи (Speech-to-Text) для голосовых вызовов. Использует OpenAI Whisper API.
 
 ## Основные файлы
 - stt.py — основная логика STT
 - test_stt.py — тесты для STT 
 
+## API
+- POST `/api/v1/stt/process` — принимает аудиофайл (multipart/form-data), возвращает JSON с распознанным текстом.
+
 ## Пример запроса
 
 ```bash
 curl -X POST \
-  http://localhost:5000/api/v1/stt/process \
-  -F "audio=@/path/to/your/audio.wav"
+  http://localhost:8000/api/v1/stt/process \
+  -F "audio_file=@/path/to/your/audio.wav"
 ```
 
 - Замените `/path/to/your/audio.wav` на путь к вашему аудиофайлу.
@@ -27,4 +24,5 @@ curl -X POST \
 
 ## Тесты
 
-Папка `tests/` содержит примеры использования и юнит-тесты для модуля STT. 
+- Папка `tests/` содержит автотесты для STT.
+- Для быстрого теста используйте bash-скрипт `test_stt_script.sh`. 

@@ -1,5 +1,47 @@
 # Voice Call Hotel — Модули и API
 
+## 📊 Итоговая сводка
+
+| Модуль   | Назначение                        | API/Функции                | Тесты      | Статус |
+|----------|-----------------------------------|----------------------------|------------|--------|
+| STT      | Speech-to-Text (Whisper/OpenAI)   | /api/v1/stt/process        | pytest, sh | ✅     |
+| LANG     | Intent Detection (GPT-4o)         | /api/v1/lang/analyze, detect_intent | pytest | ✅     |
+| Dialog   | Генерация ответов ассистента      | handle_dialog              | pytest     | ✅     |
+| TTS      | Text-to-Speech (ElevenLabs/local) | /api/v1/tts/synthesize     | pytest, sh | ✅     |
+| Voice    | Голосовые звонки (Twilio)         | /api/v1/voice              | -          | ✅     |
+
+- **Модель:** OpenAI GPT-4o (intent detection, диалог)
+- **Тестирование:** pytest, conftest.py (автозагрузка .env)
+
+## Примеры запроса/ответа
+
+**STT**
+```bash
+curl -X POST http://localhost:8000/api/v1/stt/process -F "audio_file=@audio.wav"
+# { "text": "Здравствуйте, мне нужна уборка в номере 217 сегодня вечером." }
+```
+
+**LANG (detect_intent)**
+```python
+from voice_call_handler.lang.logic import detect_intent
+print(detect_intent("Здравствуйте, я хочу забронировать номер с 5 по 7 июня на двоих."))
+# { "intent": "room_booking", ... }
+```
+
+**Dialog**
+```python
+from voice_call_handler.dialog import handle_dialog
+print(handle_dialog("Здравствуйте, я хочу забронировать номер с 5 по 7 июня на двоих."))
+# Конечно! Я помогу вам с бронированием. Уточните, пожалуйста, даты и количество гостей.
+```
+
+**TTS**
+```bash
+curl -X POST http://localhost:8000/api/v1/tts/synthesize -H "Content-Type: application/json" -d '{"text": "Ваш заказ принят"}'
+```
+
+---
+
 ## Описание модулей
 
 - **tts** — синтез речи (Text-to-Speech). Генерирует аудиофайлы на основе текста, поддерживает ElevenLabs API.
