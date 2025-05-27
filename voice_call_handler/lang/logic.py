@@ -1,5 +1,6 @@
 from sqlalchemy import Table, Column, Integer, String, Text, JSON, TIMESTAMP, MetaData
 from sqlalchemy.sql import func
+import logging
 
 def analyze_text(text: str):
     text_lower = text.lower()
@@ -25,6 +26,7 @@ def save_intent_to_db(engine, text, intent, entities):
         Column('entities', JSON),
         Column('created_at', TIMESTAMP, server_default=func.now())
     )
-    metadata.create_all(engine)
+    # metadata.create_all(engine)  # отключено для тестовой базы
     with engine.begin() as conn:
-        conn.execute(intents.insert().values(text=text, intent=intent, entities=entities)) 
+        conn.execute(intents.insert().values(text=text, intent=intent, entities=entities))
+        logging.info("✅ Интент успешно записан в test-базу") 

@@ -1,67 +1,33 @@
-import logging
-from flask import request, jsonify
-from . import stt_bp
-import tempfile
 import os
-import subprocess
-import openai
+import io
+import logging
+from fastapi import UploadFile
+import requests
 from dotenv import load_dotenv
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-def transcribe_audio_openai(path: str) -> str:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        logger.error("OPENAI_API_KEY is not set!")
-        raise RuntimeError("OPENAI_API_KEY is not set!")
-    client = openai.OpenAI(api_key=api_key)
-    with open(path, "rb") as audio_file:
-        transcript = client.audio.transcriptions.create(
-            model="whisper-1",
-            file=audio_file
-        )
-    return transcript.text
-
-@stt_bp.route('/process', methods=['POST'])
-def process_audio():
-    if 'audio' not in request.files:
-        logger.warning('No audio file part in the request')
-        return jsonify({'error': 'No audio file provided'}), 400
-    audio_file = request.files['audio']
-    if audio_file.filename == '':
-        logger.warning('No selected file')
-        return jsonify({'error': 'No selected file'}), 400
-    # Сохраняем исходный файл во временный
-    with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(audio_file.filename)[-1]) as tmp_in:
-        audio_file.save(tmp_in.name)
-        input_path = tmp_in.name
-    logger.info(f'Загрузка: {audio_file.filename} сохранён как {input_path}')
-    # Конвертируем во временный .wav (16kHz, mono)
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.wav') as tmp_out:
-        output_path = tmp_out.name
+async def transcribe_audio(audio_file: UploadFile) -> dict:
     try:
-        logger.info(f'Конвертация: {input_path} -> {output_path}')
-        cmd = [
-            'ffmpeg', '-y', '-i', input_path,
-            '-ar', '16000', '-ac', '1', output_path
-        ]
-        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if proc.returncode != 0:
-            error_msg = proc.stderr.decode(errors='ignore')
-            logger.error(f'Ошибка ffmpeg: {error_msg}')
-            return jsonify({'error': f'ffmpeg error: {error_msg}'}), 400
-        logger.info(f'Конвертация завершена: {output_path}')
-        # Распознаём через OpenAI Whisper API
-        logger.info(f'Распознавание: {output_path}')
-        text = transcribe_audio_openai(output_path)
-        logger.info(f'Распознавание завершено: {text}')
-        return jsonify({'text': text})
+        audio_bytes = io.BytesIO(await audio_file.read())
+        audio_bytes.seek(0)
+        stt_url = "https://api.openai.com/v1/audio/transcriptions"
+        stt_headers = {"Authorization": f"Bearer {OPENAI_API_KEY}"}
+        stt_data = {'model': 'whisper-1'}
+        stt_resp = requests.post(
+            stt_url,
+            headers=stt_headers,
+            files={'file': (audio_file.filename, audio_bytes, audio_file.content_type)},
+            data=stt_data
+        )
+        if stt_resp.status_code != 200:
+            logger.error(f"STT error: {stt_resp.text}")
+            raise Exception(f"STT failed: {stt_resp.text}")
+        return stt_resp.json()
     except Exception as e:
-        logger.error(f'Ошибка: {e}')
-        return jsonify({'error': str(e)}), 500
-    finally:
-        if os.path.exists(input_path):
-            os.remove(input_path)
-        if os.path.exists(output_path):
-            os.remove(output_path)
+        logger.exception(f"Error in transcribe_audio: {e}")
+        raise

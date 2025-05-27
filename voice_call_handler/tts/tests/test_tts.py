@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import tempfile
 
 load_dotenv()
 
@@ -30,8 +31,8 @@ data = {
 response = requests.post(url, json=data, headers=headers)
 
 if response.status_code == 200:
-    with open("tts/test_output.mp3", "wb") as f:
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as f:
         f.write(response.content)
-    print("Успешно: файл сохранён как test_output.mp3")
+        print(f"Успешно: файл сохранён как {f.name}")
 else:
     print(f"Ошибка: {response.status_code} — {response.text}") 

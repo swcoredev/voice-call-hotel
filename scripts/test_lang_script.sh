@@ -18,7 +18,7 @@ RECOGNIZED_TEXT=$(echo "$STT_RESPONSE" | python3 -c "import sys, json; print(jso
 # 2. Отправляем text на LANG
 LANG_RESPONSE=$(curl -s -X POST http://localhost:8000/api/v1/lang/process \
   -H "Content-Type: application/json" \
-  -d '{"text": "'$RECOGNIZED_TEXT'"}')
+  -d "{\"text\": \"$RECOGNIZED_TEXT\"}")
 
 ASSISTANT_RESPONSE=$(echo "$LANG_RESPONSE" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('response', '💭 Нет ответа от ассистента'))")
 

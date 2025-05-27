@@ -1,21 +1,24 @@
-from flask import Blueprint, request, jsonify, send_file
-from .tts import speak_text
-from .schemas import TTSText
-from dotenv import load_dotenv
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
+from .tts import generate_speech
+import io
 
-load_dotenv()
+router = APIRouter(prefix="/api/v1/tts")
 
-tts_bp = Blueprint('tts', __name__, url_prefix='/api/v1/tts')
-
-@tts_bp.route('/synthesize', methods=['POST'])
-def synthesize():
-    data = request.get_json()
-    if not data or 'text' not in data:
-        return jsonify({'error': 'Missing text'}), 400
-    tts_in = TTSText(**data)
-    result = speak_text(tts_in.text)
-    return jsonify(result)
-
-@tts_bp.route("/welcome", methods=["GET"])
-def play_welcome_message():
-    return send_file("static/ElevenLabs_Untitled_Project.wav", mimetype="audio/wav") 
+@router.post("/speak")
+async def speak(text: str):
+    if not text:
+        raise HTTPException(status_code=400, detail="No text provided")
+    
+    try:
+        audio_content = await generate_speech(text)
+        audio_stream = io.BytesIO(audio_content)
+        audio_stream.seek(0)
+        
+        return StreamingResponse(
+            audio_stream,
+            media_type="audio/mpeg",
+            headers={"Content-Disposition": "inline; filename=response.mp3"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) 
