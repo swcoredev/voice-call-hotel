@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.10.13, pytest-8.3.5, pluggy-1.6.0
+rootdir: /Users/gennadii/DevProjects/voice-call-hotel
+plugins: anyio-4.9.0
+collected 5 items
+
+voice_call_handler/tests/test_detect_intent.py F....                     [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_room_cleaning ______________________________
+
+    def test_room_cleaning():
+        result = detect_intent("Пожалуйста, уберите в номере 305 сегодня вечером.")
+        print("\n[room_cleaning]", result)
+        assert result["intent"] == "room_cleaning"
+>       assert result["room_number"] == "305"
+E       AssertionError: assert 305 == '305'
+
+voice_call_handler/tests/test_detect_intent.py:9: AssertionError
+----------------------------- Captured stdout call -----------------------------
+>> Ответ OpenAI: '{\n    "intent": "room_cleaning",\n    "room_number": 305,\n    "time": "вечером",\n    "confidence": 0.9\n}'
+
+[room_cleaning] {'intent': 'room_cleaning', 'room_number': 305, 'time': 'вечером', 'confidence': 0.9}
+=========================== short test summary info ============================
+FAILED voice_call_handler/tests/test_detect_intent.py::test_room_cleaning - A...
+========================= 1 failed, 4 passed in 4.58s ==========================

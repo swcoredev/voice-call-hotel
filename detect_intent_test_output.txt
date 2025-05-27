@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.10.13, pytest-8.3.5, pluggy-1.6.0
+rootdir: /Users/gennadii/DevProjects/voice-call-hotel
+plugins: anyio-4.9.0
+collected 5 items
+
+voice_call_handler/tests/test_detect_intent.py F.F..                     [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_room_cleaning ______________________________
+
+    def test_room_cleaning():
+        result = detect_intent("Пожалуйста, уберите в номере 305 сегодня вечером.")
+        print("\n[room_cleaning]", result)
+>       assert result["intent"] == "room_cleaning"
+E       AssertionError: assert 'unknown' == 'room_cleaning'
+E         
+E         - room_cleaning
+E         + unknown
+
+voice_call_handler/tests/test_detect_intent.py:8: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+[room_cleaning] {'intent': 'unknown', 'room_number': None, 'time': None, 'confidence': 0.0, 'error': 'Expecting value: line 1 column 1 (char 0)'}
+______________________________ test_late_checkout ______________________________
+
+    def test_late_checkout():
+        result = detect_intent("Можно ли выехать чуть позже завтра?")
+        print("\n[late_checkout]", result)
+>       assert result["intent"] == "late_checkout"
+E       AssertionError: assert 'unknown' == 'late_checkout'
+E         
+E         - late_checkout
+E         + unknown
+
+voice_call_handler/tests/test_detect_intent.py:20: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+[late_checkout] {'intent': 'unknown', 'room_number': None, 'time': None, 'confidence': 0.0, 'error': 'Expecting value: line 1 column 1 (char 0)'}
+=========================== short test summary info ============================
+FAILED voice_call_handler/tests/test_detect_intent.py::test_room_cleaning - A...
+FAILED voice_call_handler/tests/test_detect_intent.py::test_late_checkout - A...
+========================= 2 failed, 3 passed in 6.22s ==========================

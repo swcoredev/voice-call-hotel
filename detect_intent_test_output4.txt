@@ -1,0 +1,9 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.10.13, pytest-8.3.5, pluggy-1.6.0
+rootdir: /Users/gennadii/DevProjects/voice-call-hotel
+plugins: anyio-4.9.0
+collected 5 items
+
+voice_call_handler/tests/test_detect_intent.py .....                     [100%]
+
+============================== 5 passed in 6.80s ===============================

@@ -1,6 +1,12 @@
 from sqlalchemy import Table, Column, Integer, String, Text, JSON, TIMESTAMP, MetaData
 from sqlalchemy.sql import func
 import logging
+from openai import OpenAI
+import os
+import re
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def analyze_text(text: str):
     text_lower = text.lower()
@@ -29,4 +35,37 @@ def save_intent_to_db(engine, text, intent, entities):
     # metadata.create_all(engine)  # отключено для тестовой базы
     with engine.begin() as conn:
         conn.execute(intents.insert().values(text=text, intent=intent, entities=entities))
-        logging.info("✅ Интент успешно записан в test-базу") 
+        logging.info("✅ Интент успешно записан в test-базу")
+
+def detect_intent(text: str) -> dict:
+    system_prompt = (
+        "Ты агент для извлечения намерения клиента отеля. "
+        "Отвечай строго в формате JSON с полями: intent (например, 'room_cleaning', 'food_order', 'late_checkout', 'unknown'), "
+        "room_number (если есть), time (если есть), confidence (от 0 до 1, насколько уверен в разметке). "
+        "Если неясно, что хочет клиент — intent должен быть 'unknown', остальные поля null или пустые."
+    )
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": text}
+    ]
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=messages,
+            temperature=0.0,
+            max_tokens=256
+        )
+        import json
+        content = response.choices[0].message.content.strip()
+        print(">> Ответ OpenAI:", repr(content))
+        # Удаляем markdown-обёртку
+        content = re.sub(r"^```json|^```|```$", "", content.strip(), flags=re.MULTILINE).strip()
+        return json.loads(content)
+    except Exception as e:
+        return {
+            "intent": "unknown",
+            "room_number": None,
+            "time": None,
+            "confidence": 0.0,
+            "error": str(e)
+        } 
