@@ -40,9 +40,15 @@ def save_intent_to_db(engine, text, intent, entities):
 def detect_intent(text: str) -> dict:
     system_prompt = (
         "Ты агент для извлечения намерения клиента отеля. "
-        "Отвечай строго в формате JSON с полями: intent (например, 'room_cleaning', 'food_order', 'late_checkout', 'room_booking', 'unknown'), "
+        "Отвечай строго в формате JSON с полями: intent (один из 'room_cleaning', 'late_checkout', 'room_booking', 'food_order', 'wake_up_call', 'complaint', 'unknown'), "
         "room_number (если есть), time (если есть), confidence (от 0 до 1, насколько уверен в разметке). "
-        "Если клиент хочет забронировать номер, intent должен быть 'room_booking'. "
+        "Примеры фраз для интентов:\n"
+        "room_booking: 'Я хочу забронировать номер', 'Нам нужен номер с 5 по 7 июня на двоих', 'Я бы хотел снять комнату на троих'.\n"
+        "room_cleaning: 'Пожалуйста, уберите в номере 305', 'Мне нужна уборка в комнате сегодня вечером'.\n"
+        "late_checkout: 'Можно ли выехать чуть позже?', 'Я хотел бы задержаться до 2 часов'.\n"
+        "food_order: 'Хочу заказать еду в номер', 'Можно мне ужин в 8 вечера'.\n"
+        "wake_up_call: 'Разбудите меня в 6 утра', 'Мне нужен wake-up call в 7:30'.\n"
+        "complaint: 'У меня жалоба', 'В комнате шумно', 'Очень грязно, уберите пожалуйста'.\n"
         "Если неясно, что хочет клиент — intent должен быть 'unknown', остальные поля null или пустые."
     )
     messages = [
