@@ -1,19 +1,21 @@
 import os
 import io
 import logging
-from fastapi import FastAPI, File, UploadFile, Form
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, File, UploadFile, Form, Request
+from fastapi.responses import StreamingResponse, JSONResponse
 import requests
 from dotenv import load_dotenv
 import openai
+from loguru import logger
+import sys
 
 from voice_call_handler.lang import router as lang_router
 from voice_call_handler.stt import router as stt_router
 from voice_call_handler.tts import router as tts_router
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger.add("app.log", rotation="10 MB", backtrace=True, diagnose=True)
+logger.add(sys.stderr, level="ERROR")
 
 # Загрузка переменных окружения
 load_dotenv()
@@ -30,6 +32,14 @@ app = FastAPI()
 app.include_router(lang_router)
 app.include_router(stt_router)
 app.include_router(tts_router)
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.exception(f"Unhandled error: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"}
+    )
 
 @app.post("/api/v1/dialog")
 async def dialog(audio_file: UploadFile = File(...), first: bool = Form(False)):

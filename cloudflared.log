@@ -1,21 +1,21 @@
-2025-05-27T23:01:01Z INF Starting tunnel tunnelID=1f6e5c6f-2467-42b9-a877-e980bc0dbf8c
-2025-05-27T23:01:01Z INF Version 2025.4.2 (Checksum 36496e403afc14d3b0ca332a669de584f0dc4bb85f1443b853dd02265b82a444)
-2025-05-27T23:01:01Z INF GOOS: darwin, GOVersion: go1.22.5-devel-cf, GoArch: arm64
-2025-05-27T23:01:01Z INF Settings: map[cred-file:/Users/gennadii/.cloudflared/1f6e5c6f-2467-42b9-a877-e980bc0dbf8c.json credentials-file:/Users/gennadii/.cloudflared/1f6e5c6f-2467-42b9-a877-e980bc0dbf8c.json]
-2025-05-27T23:01:01Z INF cloudflared will not automatically update if installed by a package manager.
-2025-05-27T23:01:01Z INF Generated Connector ID: ba443e80-e711-414e-bbc9-99cdb6ca3314
-2025-05-27T23:01:01Z INF Initial protocol quic
-2025-05-27T23:01:01Z INF ICMP proxy will use 10.0.0.79 as source for IPv4
-2025-05-27T23:01:01Z INF ICMP proxy will use fe80::1888:4af3:d689:f1c3 in zone en0 as source for IPv6
-2025-05-27T23:01:01Z INF Created ICMP proxy listening on 10.0.0.79:0
-2025-05-27T23:01:01Z INF ICMP proxy will use 10.0.0.79 as source for IPv4
-2025-05-27T23:01:01Z INF ICMP proxy will use fe80::1888:4af3:d689:f1c3 in zone en0 as source for IPv6
-2025-05-27T23:01:01Z INF Starting metrics server on 127.0.0.1:20241/metrics
-2025-05-27T23:01:01Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=0 event=0 ip=198.41.200.43
-2025-05-27T23:01:01Z INF Registered tunnel connection connIndex=0 connection=bf8d0c4c-7492-45b2-bb97-1665445d856d event=0 ip=198.41.200.43 location=ewr14 protocol=quic
-2025-05-27T23:01:01Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=1 event=0 ip=198.41.192.77
-2025-05-27T23:01:02Z INF Registered tunnel connection connIndex=1 connection=0aef5ad8-76de-48c0-bfe4-2ca5ac4432f0 event=0 ip=198.41.192.77 location=ewr01 protocol=quic
-2025-05-27T23:01:02Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=2 event=0 ip=198.41.192.7
-2025-05-27T23:01:03Z INF Registered tunnel connection connIndex=2 connection=481d78e0-9a2f-452b-a312-00b50c9ff806 event=0 ip=198.41.192.7 location=ewr05 protocol=quic
-2025-05-27T23:01:03Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=3 event=0 ip=198.41.200.53
-2025-05-27T23:01:04Z INF Registered tunnel connection connIndex=3 connection=c3d45c22-aa63-4cfb-9642-cd6dcd4e5167 event=0 ip=198.41.200.53 location=ewr14 protocol=quic
+2025-05-28T06:28:50Z INF Starting tunnel tunnelID=1f6e5c6f-2467-42b9-a877-e980bc0dbf8c
+2025-05-28T06:28:50Z INF Version 2025.4.2 (Checksum 36496e403afc14d3b0ca332a669de584f0dc4bb85f1443b853dd02265b82a444)
+2025-05-28T06:28:50Z INF GOOS: darwin, GOVersion: go1.22.5-devel-cf, GoArch: arm64
+2025-05-28T06:28:50Z INF Settings: map[cred-file:/Users/gennadii/.cloudflared/1f6e5c6f-2467-42b9-a877-e980bc0dbf8c.json credentials-file:/Users/gennadii/.cloudflared/1f6e5c6f-2467-42b9-a877-e980bc0dbf8c.json]
+2025-05-28T06:28:50Z INF Generated Connector ID: 16b3e29e-a830-480d-8c60-106615bae9a7
+2025-05-28T06:28:50Z INF cloudflared will not automatically update if installed by a package manager.
+2025-05-28T06:28:50Z INF Initial protocol quic
+2025-05-28T06:28:50Z INF ICMP proxy will use 10.0.0.79 as source for IPv4
+2025-05-28T06:28:50Z INF ICMP proxy will use fe80::1888:4af3:d689:f1c3 in zone en0 as source for IPv6
+2025-05-28T06:28:50Z INF Created ICMP proxy listening on 10.0.0.79:0
+2025-05-28T06:28:51Z INF ICMP proxy will use 10.0.0.79 as source for IPv4
+2025-05-28T06:28:51Z INF ICMP proxy will use fe80::1888:4af3:d689:f1c3 in zone en0 as source for IPv6
+2025-05-28T06:28:51Z INF Starting metrics server on 127.0.0.1:20241/metrics
+2025-05-28T06:28:51Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=0 event=0 ip=198.41.192.67
+2025-05-28T06:28:51Z INF Registered tunnel connection connIndex=0 connection=c764d4b8-a264-4076-a38f-98be4a81d424 event=0 ip=198.41.192.67 location=ewr05 protocol=quic
+2025-05-28T06:28:51Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=1 event=0 ip=198.41.200.73
+2025-05-28T06:28:51Z INF Registered tunnel connection connIndex=1 connection=66fa1fd7-86f7-4847-97ad-6e3545f2959c event=0 ip=198.41.200.73 location=ewr14 protocol=quic
+2025-05-28T06:28:52Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=2 event=0 ip=198.41.192.107
+2025-05-28T06:28:52Z INF Registered tunnel connection connIndex=2 connection=9a60e065-f9f1-4241-94b7-6708776a960f event=0 ip=198.41.192.107 location=ewr05 protocol=quic
+2025-05-28T06:28:53Z INF Using [CurveID(4588) CurveID(25497) CurveP256] as curve preferences connIndex=3 event=0 ip=198.41.200.33
+2025-05-28T06:28:53Z INF Registered tunnel connection connIndex=3 connection=9e8f621e-816a-472d-9af3-ac2d3bceeb2f event=0 ip=198.41.200.33 location=ewr12 protocol=quic

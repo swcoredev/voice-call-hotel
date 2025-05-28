@@ -16,3 +16,4 @@ requests
 pydub
 playsound
 openai>=1.0.0
+loguru
