@@ -5,7 +5,7 @@ __pycache__/
 *.mp3
 logs/
 .env
+.env.*
 cursor_implementing_stt_module_steps.md
-.env
 *_local_test.py
 *_debug.py
